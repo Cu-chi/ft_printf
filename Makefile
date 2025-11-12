@@ -1,40 +1,46 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-NAME = libft.a
+NAME = libftprintf.a
+INCLUDES = includes/
+LIBFT = libft/libft.a
 
-SRC_FIL = ft_abc.c \
-	ft_additional.c \
-	ft_additional2.c \
-	ft_fd.c \
-	ft_is.c \
-	ft_mem.c \
-	ft_split.c \
-	ft_str.c \
-	ft_str2.c
-SRCS = $()
+SRC_DIR = srcs
+SRC_FIL = ft_printf.c
+SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FIL))
+
 BONUS_FIL = ft_bonus.c ft_bonus2.c
 
-OBJS = $(SRC_FIL:.c=.o)
+OBJS = $(SRCS:.c=.o)
 BONUS_OBJS = $(BONUS_FIL:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	ar -rcs $@ $^
+$(NAME): $(LIBFT) $(OBJS)
+	cp $(LIBFT) $@
+	ar -rcs $@ $(OBJS)
 
 bonus: $(NAME) $(BONUS_OBJS)
 	ar -rcs $(NAME) $(BONUS_OBJS)
 
 .c.o:
-	$(CC) $(CFLAGS) -c $^ -o $@
+	$(CC) $(CFLAGS) -I$(INCLUDES) -c $^ -o $@
 
-clean:
+clean: libft_clean
 	rm -f $(OBJS)
 	rm -f $(BONUS_OBJS)
 
-fclean: clean
+fclean: libft_fclean clean
 	rm -f $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re bonus
+$(LIBFT):
+	make -C libft/ all bonus
+
+libft_clean:
+	make -C libft/ clean
+
+libft_fclean:
+	make -C libft/ fclean
+
+.PHONY: all clean fclean re bonus libft_fclean libft_clean
