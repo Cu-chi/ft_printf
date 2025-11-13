@@ -6,7 +6,7 @@
 /*   By: equentin <equentin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 15:16:17 by equentin          #+#    #+#             */
-/*   Updated: 2025/11/11 08:56:47 by equentin         ###   ########.fr       */
+/*   Updated: 2025/11/12 17:05:45 by equentin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int	main(void)
 
 void	ft_lstadd_front(t_list **lst, t_list *new)
 {
+	if (!new)
+		return ;
 	new->next = *lst;
 	*lst = new;
 }
