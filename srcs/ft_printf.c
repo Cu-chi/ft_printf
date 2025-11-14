@@ -6,13 +6,12 @@
 /*   By: equentin <equentin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 10:57:17 by equentin          #+#    #+#             */
-/*   Updated: 2025/11/12 13:45:44 by equentin         ###   ########.fr       */
+/*   Updated: 2025/11/14 16:31:08 by equentin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../includes/ft_printf.h"
 #include "../libft/libft.h"
-#include <stdarg.h>
-#include <unistd.h>
 
 // %c %s %p %d %i %u %x %X %%
 
@@ -27,56 +26,99 @@ flag
 
 '#'	-> ajoute 0x devant format x
 	-> ajoute 0X devant format X
+
+'-'
 */
+/*
+#include <stdio.h>
+
+void	debug_print_list(t_format_list *f)
+{
+	printf("########################\n");
+	printf("has_blk 	: %d\n", f->has_blk);
+	printf("has_hex 	: %d\n", f->has_hex);
+	printf("has_lad 	: %d\n", f->has_lad);
+	printf("has_pad 	: %d\n", f->has_pad);
+	printf("has_sgn 	: %d\n", f->has_sgn);
+	printf("has_prs 	: %d\n", f->has_prs);
+	printf("precision 	: %d\n", f->precision);
+	printf("width 		: %d\n", f->width);
+	printf("c 		: %c\n", f->c);
+	printf("########################\n");
+}
+*/
+
+// %c %s %p %d %i %u %x %X %%
+void	ft_printf_logic(t_format_list *fmt_lst, int *printed, va_list *ap)
+{
+	(void)ap;
+	if (fmt_lst->c == '%')
+	{
+		(*printed)++;
+		ft_putchar_fd(fmt_lst->c, 1);
+	}
+	else if (fmt_lst->c == 'c')
+		write_c(fmt_lst, printed, ap);
+	else if (fmt_lst->c == 's')
+		write_s(fmt_lst, printed, ap);
+	else if (fmt_lst->c == 'd' || fmt_lst->c == 'i' || fmt_lst->c == 'u')
+		write_diu(fmt_lst, printed, ap);
+	else if (fmt_lst->c == 'x' || fmt_lst->c == 'X')
+		write_x(fmt_lst, printed, ap);
+	else if (fmt_lst->c == 'p')
+		write_p(fmt_lst, printed, ap);
+}
 
 int	ft_printf(const char *fmt, ...)
 {
-	va_list	ap;
-	char	c;
-	char	*s;
-	size_t	i;
-	char	need_fmt;
+	va_list			ap;
+	int				printed;
+	t_format_list	*fmt_lst;
 
 	va_start(ap, fmt);
-	need_fmt = 0;
-	i = 0;
-	while (fmt[i])
+	printed = 0;
+	while (*fmt)
 	{
-		if (!need_fmt && fmt[i] == '%')
-			need_fmt = 1;
-		else if (need_fmt && fmt[i] == 'c')
+		if (*fmt == '%')
 		{
-			c = (char)va_arg(ap, int);
-			write(1, &c, 1);
-		}
-		else if (need_fmt && fmt[i] == 's')
-		{
-			s = va_arg(ap, char *);
-			write(1, s, ft_strlen(s));
+			fmt_lst = ft_get_format(fmt + 1);
+			if (fmt_lst == NULL)
+				return (0);
+			ft_printf_logic(fmt_lst, &printed, &ap);
+			fmt += fmt_lst->new_index + 2;
+			free(fmt_lst);
 		}
 		else
 		{
-			need_fmt = 0;
-			write(1, &fmt[i], 1);
+			write(1, fmt++, 1);
+			printed++;
 		}
-		i++;
 	}
 	va_end(ap);
-	return (0);
+	return (printed);
 }
-
-#include <stdio.h>
-
-int	main(int ac, char **av)
+/*
+int	main(void)
 {
-	(void)ac;
-	ft_printf("%c %s", '>', av[1]);
-	printf("'%+d'\n", 42);
-	printf("'% d'\n", 42);
-	printf("'%#x'\n", 42);
-	printf("'%-10d'\n", 42);
-	printf("'%010d'\n", 42);
-	printf("'%.2147483649d'\n", 42);
-	printf("'%%'\n");
+	void	*a;
+
+	// printf("'%i'\n", 00101);
+	// printf("'%#x'\n", -1);
+	// ft_printf("'%#00d'\n", 42);
+	// ft_printf("'%d'\n", 42);
+	// ft_printf("'%#x'\n", 42);
+	// ft_printf("'%-10d'\n", 42);
+	// ft_printf("'%010d'\n", 42);
+	// ft_printf("'%.0d'\n", 42);
+	// ft_printf("'%#00%'\n");
+	// ft_printf("'% 0-+#10.5d'\n");
+	// ft_printf("%d\n", ft_printf("'%c'\n", 'a'));
+	// ft_printf("%d\n", ft_printf("'%s'\n", "abc de f rrr"));
+	// ft_printf("%d\n", ft_printf("'%x'\n", __UINT32_MAX__));
+	a = &ft_printf;
+	//ft_printf("val : %d\n", ft_printf("%p\n", a));
+	ft_printf("%p", a);
+	printf("%p", a);
 	return (0);
 }
+*/

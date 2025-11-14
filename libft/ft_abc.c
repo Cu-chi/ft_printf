@@ -6,10 +6,11 @@
 /*   By: equentin <equentin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 13:48:04 by equentin          #+#    #+#             */
-/*   Updated: 2025/11/11 07:55:28 by equentin         ###   ########.fr       */
+/*   Updated: 2025/11/13 14:19:52 by equentin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdint.h>
 #include <limits.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -105,7 +106,7 @@ void	*ft_calloc(size_t nmemb, size_t size)
 
 	if (nmemb == 0 || size == 0)
 		return (malloc(0));
-	if (nmemb <= __SIZE_MAX__ / size)
+	if (nmemb <= SIZE_MAX / size)
 	{
 		fsize = nmemb * size;
 		array = malloc(fsize);

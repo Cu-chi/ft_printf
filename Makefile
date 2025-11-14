@@ -1,26 +1,31 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 NAME = libftprintf.a
-INCLUDES = includes/
+INCLUDES = includes/ft_printf.h
 LIBFT = libft/libft.a
 
 SRC_DIR = srcs
-SRC_FIL = ft_printf.c
+SRC_FIL = ft_printf.c \
+	ft_printf_flags.c \
+	ft_printf_write.c \
+	ft_itoa_u.c \
+	ft_putnbr_hex.c \
+	ft_printf_list.c
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FIL))
 
-BONUS_FIL = ft_bonus.c ft_bonus2.c
+#BONUS_FIL = ft_bonus.c ft_bonus2.c
 
 OBJS = $(SRCS:.c=.o)
-BONUS_OBJS = $(BONUS_FIL:.c=.o)
+#BONUS_OBJS = $(BONUS_FIL:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJS)
+$(NAME): $(LIBFT) $(OBJS) $(INCLUDES)
 	cp $(LIBFT) $@
 	ar -rcs $@ $(OBJS)
 
-bonus: $(NAME) $(BONUS_OBJS)
-	ar -rcs $(NAME) $(BONUS_OBJS)
+#bonus: $(NAME) $(BONUS_OBJS)
+#	ar -rcs $(NAME) $(BONUS_OBJS)
 
 .c.o:
 	$(CC) $(CFLAGS) -I$(INCLUDES) -c $^ -o $@
