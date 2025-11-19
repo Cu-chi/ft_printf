@@ -6,35 +6,66 @@
 /*   By: equentin <equentin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 11:23:49 by equentin          #+#    #+#             */
-/*   Updated: 2025/11/14 16:31:18 by equentin         ###   ########.fr       */
+/*   Updated: 2025/11/19 09:26:52 by equentin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
 #include "../libft/libft.h"
 
-void	*format_pre_conv(t_format_list *fmt_lst, int *printed)
+int	format_pre_conv(t_format_list *fmt_lst, int *printed, int conv_len)
 {
-	if (fmt_lst->has_sgn && (fmt_lst->c == 'd' || fmt_lst->c == 'i'
-			|| fmt_lst->c == 'u'))
+	char	*str;
+
+	if (fmt_lst->width > conv_len && !fmt_lst->has_lad)
 	{
-		return (NULL);
-	}
-	if (fmt_lst->has_hex && (fmt_lst->c == 'x' || fmt_lst->c == 'X'
-			|| fmt_lst->c == 'p'))
-	{
-		if (fmt_lst->c == 'x' || fmt_lst->c == 'p')
-			ft_putstr_fd("0x", 1);
+		str = malloc(sizeof(char) * (fmt_lst->width - conv_len + 1));
+		if (str == NULL)
+			return (0);
+		str[fmt_lst->width - conv_len] = 0;
+		if (fmt_lst->has_pad && !fmt_lst->has_prs)
+			ft_memset(str, '0', fmt_lst->width - conv_len);
 		else
-			ft_putstr_fd("0X", 1);
-		*printed += 2;
+			ft_memset(str, ' ', fmt_lst->width - conv_len);
+		ft_putstr_fd(str, 1);
+		*printed += fmt_lst->width - conv_len;
+		free(str);
 	}
-	return (NULL);
+	return (1);
 }
 
-void	*format_post_conv(t_format_list *fmt_lst, int *printed)
+int	format_post_conv(t_format_list *fmt_lst, int *printed, int conv_len)
 {
-	(void)fmt_lst;
-	(void)printed;
-	return (NULL);
+	char	*str;
+
+	if (fmt_lst->width > conv_len && fmt_lst->has_lad)
+	{
+		str = malloc(sizeof(char) * (fmt_lst->width - conv_len + 1));
+		if (str == NULL)
+			return (0);
+		str[fmt_lst->width - conv_len] = 0;
+		ft_memset(str, ' ', fmt_lst->width - conv_len);
+		ft_putstr_fd(str, 1);
+		*printed += fmt_lst->width - conv_len;
+		free(str);
+	}
+	return (1);
+}
+
+int	precision(t_format_list *fmt_lst, int *printed, int conv_len)
+{
+	char	*str;
+
+	if (fmt_lst->precision > conv_len)
+	{
+		str = malloc(sizeof(char) * (fmt_lst->precision - conv_len + 1));
+		if (str == NULL)
+			return (0);
+		str[fmt_lst->precision - conv_len] = 0;
+		ft_memset(str, '0', fmt_lst->precision - conv_len);
+		ft_putstr_fd(str, 1);
+		*printed += fmt_lst->precision - conv_len;
+		free(str);
+	}
+	return (1);
 }

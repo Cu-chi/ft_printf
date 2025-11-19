@@ -1,38 +1,39 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -MMD
 NAME = libftprintf.a
-INCLUDES = includes/ft_printf.h
+INCLUDES = includes
 LIBFT = libft/libft.a
 
 SRC_DIR = srcs
 SRC_FIL = ft_printf.c \
 	ft_printf_flags.c \
 	ft_printf_write.c \
+	ft_printf_write_u.c \
 	ft_itoa_u.c \
 	ft_putnbr_hex.c \
+	ft_useful.c \
+	ft_printf_hex.c \
 	ft_printf_list.c
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FIL))
-
-#BONUS_FIL = ft_bonus.c ft_bonus2.c
-
 OBJS = $(SRCS:.c=.o)
-#BONUS_OBJS = $(BONUS_FIL:.c=.o)
+DEP = $(OBJS:.o=.d)
+
+-include $(DEP)
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJS) $(INCLUDES)
+$(NAME): $(LIBFT) $(OBJS)
 	cp $(LIBFT) $@
 	ar -rcs $@ $(OBJS)
 
-#bonus: $(NAME) $(BONUS_OBJS)
-#	ar -rcs $(NAME) $(BONUS_OBJS)
+bonus: all
 
-.c.o:
-	$(CC) $(CFLAGS) -I$(INCLUDES) -c $^ -o $@
+%.o: %.c 
+	$(CC) $(CFLAGS) -I$(INCLUDES) -c $< -o $@
 
 clean: libft_clean
 	rm -f $(OBJS)
-	rm -f $(BONUS_OBJS)
+	rm -f $(DEP)
 
 fclean: libft_fclean clean
 	rm -f $(NAME)

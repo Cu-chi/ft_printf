@@ -1,25 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_hex.c                                    :+:      :+:    :+:   */
+/*   ft_useful.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: equentin <equentin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/14 14:13:48 by equentin          #+#    #+#             */
-/*   Updated: 2025/11/19 09:27:44 by equentin         ###   ########.fr       */
+/*   Created: 2025/11/17 13:12:58 by equentin          #+#    #+#             */
+/*   Updated: 2025/11/18 15:20:14 by equentin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
+#include "../libft/libft.h"
 
-void	ft_putnbr_hex(unsigned long nbr, char *base, int *printed)
+void	only_format(t_format_list *fmt_lst, int *printed)
 {
-	if (nbr < 16)
+	format_pre_conv(fmt_lst, printed, 0);
+	format_post_conv(fmt_lst, printed, 0);
+}
+
+int	count_digits_base(size_t nb, int base)
+{
+	int	c;
+
+	c = 1;
+	while (nb >= (size_t)base)
 	{
-		write(1, base + nbr % 16, 1);
-		(*printed)++;
-		return ;
+		nb /= base;
+		c++;
 	}
-	ft_putnbr_hex(nbr / 16, base, printed);
-	ft_putnbr_hex(nbr % 16, base, printed);
+	return (c);
 }
