@@ -6,13 +6,13 @@
 /*   By: equentin <equentin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 13:27:03 by equentin          #+#    #+#             */
-/*   Updated: 2025/11/14 14:33:19 by equentin         ###   ########.fr       */
+/*   Updated: 2025/11/19 09:28:45 by equentin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/libft.h"
 
-static unsigned int	ft_itoa_u_size(unsigned int n)
+static int	ft_itoa_u_size(unsigned int n)
 {
 	int	size;
 
@@ -29,8 +29,8 @@ static unsigned int	ft_itoa_u_size(unsigned int n)
 
 char	*ft_itoa_u(unsigned int n)
 {
-	char			*a;
-	int				size;
+	char	*a;
+	int		size;
 
 	size = ft_itoa_u_size(n);
 	a = (char *)ft_calloc(size + 1, sizeof(char));
