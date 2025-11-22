@@ -13,11 +13,11 @@
 #include "../includes/ft_printf.h"
 #include "../libft/libft.h"
 
-static void	format_hex(t_format_list *fmt_lst, unsigned int *nb_digit,
+static void	format_hex(t_format_list *fmt_lst, int *nb_digit,
 		int *printed)
 {
-	nb_digit += 2;
-	if (fmt_lst->has_prs)
+	*nb_digit += 2;
+	if (!fmt_lst->has_pad && !fmt_lst->has_prs && !fmt_lst->has_lad)
 		format_pre_conv(fmt_lst, printed, *nb_digit);
 	if (fmt_lst->c == 'x')
 		ft_putstr_fd("0x", 1);
@@ -31,7 +31,7 @@ static void	format_hex(t_format_list *fmt_lst, unsigned int *nb_digit,
 void	write_x(t_format_list *fmt_lst, int *printed, va_list *ap)
 {
 	const unsigned int	u = va_arg(*ap, unsigned);
-	unsigned int		nb_digit;
+	int		nb_digit;
 
 	if (u == 0 && fmt_lst->has_prs && fmt_lst->precision == 0)
 		return (only_format(fmt_lst, printed));
