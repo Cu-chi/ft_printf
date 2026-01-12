@@ -6,20 +6,20 @@
 /*   By: equentin <equentin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 14:13:48 by equentin          #+#    #+#             */
-/*   Updated: 2025/11/19 09:27:44 by equentin         ###   ########.fr       */
+/*   Updated: 2026/01/12 12:48:06 by equentin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
 
-void	ft_putnbr_hex(unsigned long nbr, char *base, int *printed)
+void	ft_putnbr_hex(unsigned long nbr, char *base, int *printed, int fd)
 {
 	if (nbr < 16)
 	{
-		write(1, base + nbr % 16, 1);
+		write(fd, base + nbr % 16, 1);
 		(*printed)++;
 		return ;
 	}
-	ft_putnbr_hex(nbr / 16, base, printed);
-	ft_putnbr_hex(nbr % 16, base, printed);
+	ft_putnbr_hex(nbr / 16, base, printed, fd);
+	ft_putnbr_hex(nbr % 16, base, printed, fd);
 }
