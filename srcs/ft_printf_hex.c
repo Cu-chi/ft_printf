@@ -6,7 +6,7 @@
 /*   By: equentin <equentin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 15:46:43 by equentin          #+#    #+#             */
-/*   Updated: 2026/01/12 12:47:52 by equentin         ###   ########.fr       */
+/*   Updated: 2026/01/14 16:34:39 by equentin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	write_x(t_format_list *fmt_lst, int *printed, va_list *ap)
 	if (u == 0 && fmt_lst->has_prs && fmt_lst->precision == 0)
 		return (only_format(fmt_lst, printed));
 	nb_digit = count_digits_base(u, 16);
-	if ((unsigned)fmt_lst->precision > nb_digit)
+	if (fmt_lst->precision > nb_digit)
 		nb_digit += fmt_lst->precision - nb_digit;
 	if (u > 0 && fmt_lst->has_hex)
 		format_hex(fmt_lst, &nb_digit, printed);
