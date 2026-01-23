@@ -6,7 +6,7 @@
 /*   By: equentin <equentin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/11 10:57:17 by equentin          #+#    #+#             */
-/*   Updated: 2026/01/12 12:48:03 by equentin         ###   ########.fr       */
+/*   Updated: 2026/01/23 10:29:08 by equentin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_printf_logic(t_format_list *fmt_lst, int *printed, va_list *ap)
 	if (fmt_lst->c == '%')
 	{
 		(*printed)++;
-		ft_putchar_fd(fmt_lst->c, 1);
+		ft_putchar_fd(fmt_lst->c, fmt_lst->fd);
 	}
 	else if (fmt_lst->c == 'c')
 		write_c(fmt_lst, printed, ap);
